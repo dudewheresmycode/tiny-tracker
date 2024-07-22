@@ -448,7 +448,7 @@ def setXStart(value):
     global sx1
     sx1=int(value)    
     parser.set('putting', 'startx1', str(sx1))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setXEnd(value):
@@ -472,7 +472,7 @@ def setXEnd(value):
 
     sx2=int(value)    
     parser.set('putting', 'startx2', str(sx2))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass  
 
 def setYStart(value):
@@ -488,7 +488,7 @@ def setYStart(value):
 
     y1=int(value)    
     parser.set('putting', 'y1', str(y1))
-    parser.write(open(CFG_FILE, "w"))     
+    parser.write(open(configFilePath, "w"))     
     pass
 
 def setYEnd(value):
@@ -504,7 +504,7 @@ def setYEnd(value):
 
     y2=int(value)    
     parser.set('putting', 'y2', str(y2))
-    parser.write(open(CFG_FILE, "w"))     
+    parser.write(open(configFilePath, "w"))     
     pass 
 
 def setBallRadius(value):
@@ -512,7 +512,7 @@ def setBallRadius(value):
     global ballradius
     ballradius = int(value)
     parser.set('putting', 'radius', str(ballradius))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setFlip(value):
@@ -520,7 +520,7 @@ def setFlip(value):
     global flipImage
     flipImage = int(value)
     parser.set('putting', 'flip', str(flipImage))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setFlipView(value):
@@ -528,7 +528,7 @@ def setFlipView(value):
     global flipView
     flipView = int(value)
     parser.set('putting', 'flipView', str(flipView))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setMjpeg(value):
@@ -540,7 +540,7 @@ def setMjpeg(value):
         message = "Video Codec changed - Please restart the putting app"
     mjpegenabled = int(value)
     parser.set('putting', 'mjpeg', str(mjpegenabled))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setOverwriteFPS(value):
@@ -552,7 +552,7 @@ def setOverwriteFPS(value):
         message = "Overwrite of FPS changed - Please restart the putting app"
     overwriteFPS = int(value)
     parser.set('putting', 'fps', str(overwriteFPS))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def setDarkness(value):
@@ -560,7 +560,7 @@ def setDarkness(value):
     global darkness
     darkness = int(value)
     parser.set('putting', 'darkness', str(darkness))
-    parser.write(open(CFG_FILE, "w"))
+    parser.write(open(configFilePath, "w"))
     pass
 
 def GetAngle (p1, p2):
@@ -654,7 +654,7 @@ while True:
     if hsvVals != newHSV:
         debugLog(newHSV)
         parser.set('putting', 'customhsv', str(newHSV)) #['hmin']+newHSV['smin']+newHSV['vmin']+newHSV['hmax']+newHSV['smax']+newHSV['vmax']))
-        parser.write(open(CFG_FILE, "w"))
+        parser.write(open(configFilePath, "w"))
         hsvVals = newHSV
         debugLog("HSV values changed - Custom Color Set to config.ini")
 
@@ -1081,7 +1081,7 @@ while True:
             parser.set('putting', 'focus', str(focus))
             parser.set('putting', 'autofocus', str(autofocus))
 
-            parser.write(open(CFG_FILE, "w"))
+            parser.write(open(configFilePath, "w"))
 
             a_key_pressed = False
 

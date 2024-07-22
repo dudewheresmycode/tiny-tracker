@@ -18,6 +18,13 @@ Install the basic dependencies:
 
 > _Note: To update the requirements file after installing new dependencies run:<br>`./venv/bin/pip freeze > requirements.txt`_
 
+To generate a new pyinstaller spec file:
+```bash
+./venv/bin/pyi-makespec \
+--add-data "images/splash.png:images" \
+--onefile \
+ball_tracking.py
+```
 #### Running
 
 To run the app locally:
