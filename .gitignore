@@ -13,3 +13,4 @@ build*
 dist
 __pycache__
 .DS_*
+venv
