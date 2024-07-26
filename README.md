@@ -21,7 +21,6 @@ To generate a new pyinstaller spec file:
 ```bash
 ./venv/bin/pyi-makespec \
 --add-data "images/splash.png:images" \
---onefile \
 ball_tracking.py
 ```
 
@@ -35,7 +34,9 @@ To run the app locally:
 ./venv/bin/python ball_tracking.py
 
 ## pass a custom config
-./venv/bin/python ball_tracking.py --config ./config.ini
+./venv/bin/python ball_tracking.py --http http://127.0.0.1:8888/putting --config ./config.ini
+## use arUco markers on mat for position tracking
+./venv/bin/python mat_tracking.py --http http://127.0.0.1:8888/putting --config ./config.ini
 ```
 
 #### Building

@@ -1,3 +1,4 @@
+from collections import deque
 import cv2
 import numpy as np
 import time
@@ -19,6 +20,8 @@ videoWidth=640
 ballradius = 0
 darkness = 0
 d_key_pressed = False 
+startminimum = 30
+golfballradius = 21.33; # in mm
 
 started = False
 entered = False
