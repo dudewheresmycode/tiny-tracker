@@ -14,6 +14,7 @@ import logging
 class ColorFinder:
     def __init__(self, trackBar=False):
         self.trackBar = trackBar
+        self.windowName = "Mask Editor"
         if self.trackBar:
             self.initTrackbars()
             trackBar.__setattr__
@@ -21,18 +22,23 @@ class ColorFinder:
     def empty(self, a):
         pass
 
+    def destroyWindow():
+        cv2.destroyWindow(self.windowName)
+
     def initTrackbars(self):
         """
         To intialize Trackbars . Need to run only once
         """
-        cv2.namedWindow("TrackBars")
-        cv2.resizeWindow("TrackBars", 640, 240)
-        cv2.createTrackbar("Hue Min", "TrackBars", 0, 179, self.empty)
-        cv2.createTrackbar("Hue Max", "TrackBars", 179, 179, self.empty)
-        cv2.createTrackbar("Sat Min", "TrackBars", 0, 255, self.empty)
-        cv2.createTrackbar("Sat Max", "TrackBars", 255, 255, self.empty)
-        cv2.createTrackbar("Val Min", "TrackBars", 0, 255, self.empty)
-        cv2.createTrackbar("Val Max", "TrackBars", 255, 255, self.empty)
+        
+        cv2.namedWindow(self.windowName, cv2.WINDOW_NORMAL)
+        cv2.resizeWindow(self.windowName, 640, 240)
+        cv2.moveWindow(self.windowName, 20, 20)
+        cv2.createTrackbar("Hue Min", self.windowName, 0, 179, self.empty)
+        cv2.createTrackbar("Hue Max", self.windowName, 179, 179, self.empty)
+        cv2.createTrackbar("Sat Min", self.windowName, 0, 255, self.empty)
+        cv2.createTrackbar("Sat Max", self.windowName, 255, 255, self.empty)
+        cv2.createTrackbar("Val Min", self.windowName, 0, 255, self.empty)
+        cv2.createTrackbar("Val Max", self.windowName, 255, 255, self.empty)
 
     def getTrackbarValues(self):
         """
@@ -40,12 +46,12 @@ class ColorFinder:
         :return: hsv values from the trackbar window
         """
 
-        hmin = cv2.getTrackbarPos("Hue Min", "TrackBars")
-        smin = cv2.getTrackbarPos("Sat Min", "TrackBars")
-        vmin = cv2.getTrackbarPos("Val Min", "TrackBars")
-        hmax = cv2.getTrackbarPos("Hue Max", "TrackBars")
-        smax = cv2.getTrackbarPos("Sat Max", "TrackBars")
-        vmax = cv2.getTrackbarPos("Val Max", "TrackBars")
+        hmin = cv2.getTrackbarPos("Hue Min", self.windowName)
+        smin = cv2.getTrackbarPos("Sat Min", self.windowName)
+        vmin = cv2.getTrackbarPos("Val Min", self.windowName)
+        hmax = cv2.getTrackbarPos("Hue Max", self.windowName)
+        smax = cv2.getTrackbarPos("Sat Max", self.windowName)
+        vmax = cv2.getTrackbarPos("Val Max", self.windowName)
 
         hsvVals = {"hmin": hmin, "smin": smin, "vmin": vmin,
                    "hmax": hmax, "smax": smax, "vmax": vmax}
@@ -57,12 +63,12 @@ class ColorFinder:
         Sets the trackbar values in runtime
         """
 
-        hmin = cv2.setTrackbarPos("Hue Min", "TrackBars",hsvValues['hmin'])
-        smin = cv2.setTrackbarPos("Sat Min", "TrackBars",hsvValues['smin'])
-        vmin = cv2.setTrackbarPos("Val Min", "TrackBars",hsvValues['vmin'])
-        hmax = cv2.setTrackbarPos("Hue Max", "TrackBars",hsvValues['hmax'])
-        smax = cv2.setTrackbarPos("Sat Max", "TrackBars",hsvValues['smax'])
-        vmax = cv2.setTrackbarPos("Val Max", "TrackBars",hsvValues['vmax'])
+        hmin = cv2.setTrackbarPos("Hue Min", self.windowName,hsvValues['hmin'])
+        smin = cv2.setTrackbarPos("Sat Min", self.windowName,hsvValues['smin'])
+        vmin = cv2.setTrackbarPos("Val Min", self.windowName,hsvValues['vmin'])
+        hmax = cv2.setTrackbarPos("Hue Max", self.windowName,hsvValues['hmax'])
+        smax = cv2.setTrackbarPos("Sat Max", self.windowName,hsvValues['smax'])
+        vmax = cv2.setTrackbarPos("Val Max", self.windowName,hsvValues['vmax'])
 
         hsvVals = {"hmin": hmin, "smin": smin, "vmin": vmin,
                    "hmax": hmax, "smax": smax, "vmax": vmax}

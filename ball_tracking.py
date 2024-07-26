@@ -33,6 +33,8 @@ textcolor=(200, 200, 200)
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
+ap.add_argument("--http",
+                help="Send http requests to this URL (e.g. --http http://localhost:8888/putting)")
 ap.add_argument("-v", "--video",
                 help="path to the (optional) video file")
 ap.add_argument("-i", "--img",
@@ -56,6 +58,10 @@ parser = ConfigParser()
 configFilePath = 'config.ini'
 if args.get("config", False):
     configFilePath = args['config']
+
+httpRequestUrl = False
+if args.get("http", False):
+    httpRequestUrl = args['http']
 
 debugLog("Loading config file: "+configFilePath)
 parser.read(configFilePath)
@@ -743,7 +749,10 @@ while True:
 
                                 if len(filtered) >= (startminimum/2):
                                     debugLog("New ball start position found!")
-                                    sendEvent({ "eventName": "ready", "data": { "position": center } })
+                                    eventData = { "eventName": "ready", "data": { "position": center } }
+                                    sendEvent(eventData)
+                                    if httpRequestUrl != False:
+                                        makeHTTPRequest(httpRequestUrl, eventData)
                                     # replayavail = False
                                     noOfStarts = noOfStarts + 1
                                     lastShotSpeed = 0
@@ -882,27 +891,15 @@ while True:
                     
                 # Data that we will send in post request.
                 data = {"ballSpeed":"%.2f" % speed,"totalSpin":totalSpin,"launchDirection":"%.2f" % launchDirection}
+                eventData = { "eventName": "putt", "data": data }
 
                 # The POST request to our node server
                 if args["ballcolor"] == "calibrate":
                     debugLog("calibration mode - shot data not send")
                 else:
-                    sendEvent({ "eventName": "putt", "data": data })
-                    # TODO: allow http requests as an optional command line argument?
-                    # try:
-                    #     res = requests.post('http://127.0.0.1:8888/putting', json=data)
-                    #     res.raise_for_status()
-                    #     # Convert response data to json
-                    #     returned_data = res.json()
-
-                    #     debugLog(returned_data)
-                    #     result = returned_data['result']
-                    #     debugLog("Response from Node.js:", result)
-
-                    # except requests.exceptions.HTTPError as e:  # This is the correct syntax
-                    #     debugLog(e)
-                    # except requests.exceptions.RequestException as e:  # This is the correct syntax
-                    #     debugLog(e)
+                    sendEvent(eventData)
+                    if httpRequestUrl != False:
+                        makeHTTPRequest(httpRequestUrl, eventData)
             else:
                 debugLog("Misread on HLA - Shot not send!!!")    
             if len(pts) > calObjectCount:
@@ -954,14 +951,14 @@ while True:
     #cv2.putText(frame,"FPS:"+str(fps),(20,200),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0, 0, 255))
 
     if not lastShotSpeed == 0:
-        cv2.line(frame,(lastShotStart),(lastShotEnd),(0, 255, 255),4,cv2.LINE_AA)      
-    
+        cv2.line(frame,(lastShotStart),(lastShotEnd),(0, 255, 255),4,cv2.LINE_AA)
+
     if started:
         cv2.line(frame,(sx2,startCircle[1]),(sx2+400,startCircle[1]),(255, 255, 255),4,cv2.LINE_AA)
     else:
         cv2.line(frame,(sx2,int(y1+((y2-y1)/2))),(sx2+400,int(y1+((y2-y1)/2))),(255, 255, 255),4,cv2.LINE_AA) 
 
-        # Mark Start Circle
+    # Mark Start Circle
     if started:
         cv2.circle(frame, (startCircle[0],startCircle[1]), startCircle[2],(0, 0, 255), 2)
         cv2.circle(frame, (startCircle[0],startCircle[1]), 5, (0, 0, 255), -1) 
@@ -1096,7 +1093,7 @@ while True:
             myColorFinder = ColorFinder(False)
             cv2.destroyWindow("Original")
             cv2.destroyWindow("MaskFrame")
-            cv2.destroyWindow("TrackBars")
+            cv2.destroyWindow(myColorFinder.windowName)
             d_key_pressed = False
 
 
